@@ -1,0 +1,14 @@
+<script>
+    window.selectTag = (tag) => window.location.href = `/results?t=${encodeURIComponent(tag)}`
+</script>
+<div style="display: flex; width: 100%; flex-wrap: wrap; justify-content: space-around; max-width: 1000px;">
+    <button class="empire-btn-round" onClick="selectTag('romance')">
+        Loved
+    </button>
+    <button class="empire-btn-round" onClick="selectTag('art-house')">
+        Inspired
+    </button>
+    <button class="empire-btn-round" onClick="selectTag('horror')">
+        Afraid
+    </button>
+</div>

@@ -1,0 +1,529 @@
+<style>
+    /* CUSTOM BACKGROUND */
+    #siteWrapper {
+        background: black;
+    }
+    header {
+        background: none !important;
+    }
+    @media only screen and (min-width: 1200px) {
+        #siteWrapper {
+            background-image: 
+                linear-gradient(#131313c4, #131313c4),
+                url('https://raw.githubusercontent.com/sebringrose/MinuteSquarespaceScripts/main/assets/Asset_bgScene.jpeg');
+            background-repeat: no-repeat;
+            background-position: top;
+            background-size: contain;
+        }
+    }
+
+    /* PAGE STYLES */
+    #page {
+        max-width: 1500px;
+        padding: 0px 32px 32px;
+    }
+    section {
+        width: 100%;
+        max-width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+    }
+    section h1, section h2, section h3, section h4, section p {
+        line-height: normal !important;
+        font-family: Lato !important;
+        color: white !important;
+    }
+    section h1, section h2, section h3, section h4 {
+        font-weight: 600 !important;
+    }
+    section p {
+        font-size: 15px !important;
+    }
+    #selected-section {
+        flex-direction: column;
+    }
+    #button-section {
+        justify-content: center;
+    }
+    .button-div {
+        max-width: 300px;
+        min-width: 150px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    @media only screen and (max-width: 600px) {
+        .button-div * {
+            font-size: 15px !important;
+        }
+    }
+    .empire-btn img {
+        height: 32px;
+        margin-right: 5px;
+    }
+    .carousel-arrow {
+        height: 100px;
+        margin-top: 50px;
+        cursor: pointer;
+        filter: brightness(0) saturate(100%) invert(90%) sepia(10%) saturate(4680%) hue-rotate(316deg) brightness(105%) contrast(110%);
+    }
+    .hide-mobile {
+        display: flex;
+    }
+    @media only screen and (max-width: 600px) {
+        .hide-mobile {
+            display: none !important;
+        }
+    }
+    #carousel-items {
+        flex: 1; 
+        display: flex; 
+        justify-content: space-around;
+        flex-wrap: wrap;
+    }
+    .carousel-item {
+        width: 300px;
+    }
+    .film-poster {
+        height: 200px;
+        box-sizing: border-box;
+        border: 10px solid black;
+        background-color: darkgrey;
+        border-radius: 26px;
+        background-size: cover;
+    }
+    .film-poster img {
+        position: relative;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        height: 70px;
+        cursor: pointer;
+        filter: brightness(0) saturate(100%) invert(100%) sepia(66%) saturate(66%) hue-rotate(213deg) brightness(117%) contrast(100%);
+    }
+    #info-section {
+        flex-direction: column;
+        align-items: center;
+    }
+    .only-mobile {
+        display: flex;
+    }
+    @media only screen and (min-width: 600px) {
+        .only-mobile {
+            display: none !important;
+        }
+    }
+    .info { 
+        background-color: rgba(52, 63, 75, 0.15); 
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 5px auto;
+        padding: 5px;
+    }
+    .info * { margin: 5px auto; }
+    #overlay-section {
+        display: none;
+        flex-direction: column;
+        max-width: 100vw;
+        width: 100vw;
+        max-height: 100vh;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: rgba(0, 0, 0, 0.4);
+        z-index: 1001;
+        justify-content: center;
+        align-items: center;
+        overflow: auto;
+    }
+    #trailer-popup {
+	    max-width: 564px;
+        width: calc(100% - 2rem);
+        height: 100%;
+        padding: 132px 1rem 50px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex-wrap: nowrap;
+    }
+    .close-button {
+        filter: invert(1);
+        cursor: pointer;
+        width: 27px;
+        height: 27px;
+    }
+    #trailer_container {
+        position: relative;
+        width: 100%;
+        padding-top: 41.5%;
+        border: 5px solid white;
+        border-radius: 25px;
+        box-sizing: border-box;
+        overflow: hidden;
+    }
+    #trailer_player_container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+    #save-box-container {
+        width: 100%;
+        max-width: 500px;
+        margin-bottom: 20px;
+        display: flex;
+        flex-direction: column;
+    }
+    #save-box {
+        background-color: #FFFFFF;
+        border-radius: 25px;
+        opacity: 0.9;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 1rem 0;
+    }
+    #save-box * {
+        color: black !important;
+    }
+    #save-box p {
+        margin: 10px 10%;
+        font-size: 18px !important;
+        text-align: center;
+    }
+    #save-box-form {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+    .signup-input {
+        height: 30px;
+    }
+    .signup-button {
+        border-radius: 5px;
+        height: 35px;
+    }
+</style>
+
+<section id="selected-section">
+    <h1 id="selected-title" style="margin: 20px auto;">You Selected: </h1>
+    <p class="info only-mobile">Press play to watch a 30 second trailer</p>
+</section>
+
+<section id="carousel-section" style="flex-wrap: nowrap;">
+    <div id="carousel-left-arrow" class="hide-mobile">
+        <img onclick="populatePage({ new: true })" class="carousel-arrow" src="https://raw.githubusercontent.com/sebringrose/MinuteSquarespaceScripts/main/assets/Asset_chevron.png" alt="left-arrow" style="transform: rotate(90deg);">
+    </div>
+    <div id="carousel-items">
+        <div id="result-1" class="carousel-item">
+            <div id="result-1-poster" class="film-poster">
+                <img src="https://raw.githubusercontent.com/sebringrose/MinuteSquarespaceScripts/main/assets/Asset_playIcon.png" alt="play">
+            </div>
+            <div class="info">
+                <h4 id="result-1-title">...</h4>
+                <p id="result-1-tags">...</p>
+            </div>
+        </div>
+        <div id="result-2" class="carousel-item">
+            <div id="result-2-poster" class="film-poster">
+                <img src="https://raw.githubusercontent.com/sebringrose/MinuteSquarespaceScripts/main/assets/Asset_playIcon.png" alt="play">
+            </div>
+            <div class="info">
+                <h4 id="result-2-title">...</h4>
+                <p id="result-2-tags">...</p>
+            </div>
+        </div>
+        <div id="result-3" class="carousel-item">
+            <div id="result-3-poster" class="film-poster" onclick="selectFilm('A World Between Women Teaser Trailer')">
+                <img src="https://raw.githubusercontent.com/sebringrose/MinuteSquarespaceScripts/main/assets/Asset_playIcon.png" alt="play">
+            </div>
+            <div class="info">
+                <h4 id="result-3-title">...</h4>
+                <p id="result-3-tags">...</p>
+            </div>
+        </div>
+    </div>
+    <div id="carousel-right-arrow" class="hide-mobile">
+        <img onclick="populatePage({ new: true })" class="carousel-arrow" src="https://raw.githubusercontent.com/sebringrose/MinuteSquarespaceScripts/main/assets/Asset_chevron.png" alt="left-arrow" style="transform: rotate(270deg);">
+    </div>
+</section>
+
+<section id="info-section">
+    <div class="only-mobile">
+        <div class="carousel-left-arrow">
+            <img onclick="populatePage({ new: true })" class="carousel-arrow" src="https://raw.githubusercontent.com/sebringrose/MinuteSquarespaceScripts/main/assets/Asset_chevron.png" alt="left-arrow" style="transform: rotate(90deg);">
+        </div>
+        <div class="carousel-right-arrow">
+            <img onclick="populatePage({ new: true })" class="carousel-arrow" src="https://raw.githubusercontent.com/sebringrose/MinuteSquarespaceScripts/main/assets/Asset_chevron.png" alt="left-arrow" style="transform: rotate(270deg);">
+        </div>
+    </div>
+    <p class="info hide-mobile">Press play to watch a 30 second trailer</p>
+</section>
+
+<section id="button-section">
+    <div class="button-div">
+        <button class="empire-btn" onclick="window.location.href = '/'">
+            <img alt="results" src="https://raw.githubusercontent.com/sebringrose/MinuteSquarespaceScripts/main/assets/Asset_iconHome.svg">
+            Home
+        </button>
+    </div>
+    <div class="button-div">
+        <button class="empire-btn" onclick="populatePage({ shuffle: true })">
+            Shuffle again
+            <img alt="results" src="https://raw.githubusercontent.com/sebringrose/MinuteSquarespaceScripts/main/assets/Asset_searchIcon.png">
+        </button>
+    </div>
+</section>
+
+<section id="overlay-section">
+</section>
+
+<!-- Overlay templates -->
+<template id="overlay-loading">
+    <img alt="loading" src="https://raw.githubusercontent.com/sebringrose/MinuteSquarespaceScripts/main/assets/Asset_loadingAnimation.gif" style="max-width: 80vw;">
+</template>
+
+<template id="overlay-trailer">
+    <section id="trailer-popup">
+        <img class="close-button" alt="close" src="https://raw.githubusercontent.com/sebringrose/MinuteSquarespaceScripts/main/assets/Asset_closeIcon.png" style="align-self: flex-end;" onclick="overlay('hide')">
+
+        <div id="trailer_container">
+            <div id="trailer_player_container"></div>
+        </div>
+        
+        <div style="display: flex;">
+            <div class="button-div">
+                <button class="empire-btn" onclick="selectFilm()">
+                    <img alt="play" src="https://raw.githubusercontent.com/sebringrose/MinuteSquarespaceScripts/main/assets/Asset_sPlayIcon.png">
+                    Play full film
+                </button>
+            </div>
+            <div class="button-div">
+                <button class="empire-btn" onclick="toggleSaveBox()">
+                    <img alt="save" src="https://raw.githubusercontent.com/sebringrose/MinuteSquarespaceScripts/main/assets/Asset_saveIcon.png">
+                    Save for later
+                </button>
+            </div>
+        </div>
+
+        <div id="save-box-container" style="visibility: hidden;">
+            <img class="close-button" alt="close" src="https://raw.githubusercontent.com/sebringrose/MinuteSquarespaceScripts/main/assets/Asset_closeIcon.png" style="align-self: flex-end;" onclick="toggleSaveBox()">
+            <div id="save-box">
+                <h1 id="save-box-title">Great choice!</h1>
+                <p id="save-box-text">Please add your email address below to save the films for later viewing</p>
+                <form id="save-box-form" name="submit-to-google-sheet">
+                    <input class="signup-input" name="email" type="email" placeholder="Email">
+                    <input id="trailer_title_input" name="trailer_title" type="hidden">
+                    <button class="empire-btn signup-button" type="submit">Sign up</button>
+                </form>
+            </div>
+        </div>
+    </section>
+</template>
+
+<!-- AUTOPLAY TOGGLE -->
+<!-- Change variable value to true to enable autoplay (false to disable) -->
+<script>
+    window.autoplayTrailers = false
+</script>
+
+<!-- Overlay controller -->
+<script>
+    window.overlay = (templateId, callback) => {
+        const overlaySection = document.querySelector("#overlay-section")
+        let otherSections = Array.from(document.getElementsByTagName("section"))
+        otherSections = otherSections.filter(section => section.id !== "overlay-section")
+
+        if (!templateId || templateId === "hide") {
+            document.body.style.overflow = "auto"
+            overlaySection.innerHTML = ""
+            overlaySection.style.display = "none"
+            otherSections.forEach(section => section.style.visibility = "visible")
+            return callback ? callback() : null
+        }
+        
+        const overlayContent = document.querySelector(templateId)
+        if (overlayContent && overlayContent.content) {
+            document.body.style.overflow = "hidden"
+            overlaySection.append(overlayContent.content.cloneNode(true))
+            otherSections.forEach(section => section.style.visibility = "hidden")
+            overlaySection.style.display = "flex"
+            return callback ? callback() : null
+        }
+    }
+</script>
+
+<!-- EMBEDDED TRAILER PLAYER SCRIPT -->
+<!-- This fcn is called as a callback to overlay function when displaying player overlay content -->
+<!-- 1. Load FlowPlayer scripts -->
+<!-- 2. Use window.selectedFilm as data source for flowplayer fcn -->
+<link rel="stylesheet" href="//cdn.flowplayer.com/releases/native/stable/style/flowplayer.css">
+<script src="//cdn.flowplayer.com/releases/native/stable/flowplayer.min.js"></script>
+<!-- Optional plugins -->
+<script src="//cdn.flowplayer.com/releases/native/stable/plugins/hls.min.js"></script>
+<script>
+    // runs flowplayer script and sets up email save form
+    window.playSelectedTrailer = () => {
+        flowplayer('#trailer_player_container', {
+            src: selectedFilm.mediafiles.m3u8_url,
+            poster: selectedFilm.images.normal_image_url,
+            preload: "auto",
+            ratio: "564:234",
+            ui: 2048,
+            autoplay: autoplayTrailers,
+            token: 'eyJraWQiOiJBblJBR3VYN1lNbDkiLCJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NiJ9.eyJjIjoie1wiYWNsXCI6NCxcImlkXCI6XCJBblJBR3VYN1lNbDlcIixcImRvbWFpblwiOltcInd3dy5taW51dGVzaG9ydHMuY28udWtcIixcImp1bGlhbi12aWZvci5zcXVhcmVzcGFjZS5jb21cIl19IiwiaXNzIjoiRmxvd3BsYXllciJ9.ZQ_BBs6sCSvis4skaHIeZIyGKUSGRtaGFtix7RXZh53G1QzHN8ooMdE_N-8OcuYi_ePDeL1cAAzpPTeACQ2wAQ'
+        })
+
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbzIZbj5AoBO2hP6_mxjdq0m8ttR-xtuzognpoQrurOMZUzt6PRRcsI4i0XXaVIB6A/exec'
+        const form = document.forms['submit-to-google-sheet']
+        const trailerTitleInput = document.querySelector("#trailer_title_input")
+        const saveBoxTitle = document.querySelector("#save-box-title")
+        const saveBoxText = document.querySelector("#save-box-text")
+    
+        form.addEventListener('submit', e => {
+            e.preventDefault()
+            trailerTitleInput.value = selectedFilm.name
+
+            fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+                .then(response => {
+                    console.log('Success!', response)
+                    saveBoxTitle.textContent = "Thank you for signing up"
+                    saveBoxText.textContent = "Your saved films will be emailed to you. We won't contact you for anything else."
+                    form.style.display = "none"
+                })
+                .catch(error => {
+                    console.error('Error!', error.message)
+                    alert("Error posting form data. Please try again or contact an admin if the issue persists.")
+                })
+        })
+    }
+
+    window.toggleSaveBox = () => {
+        const saveBoxCon = document.querySelector("#save-box-container")
+        const saveBoxVis = saveBoxCon.style.visibility
+        if (saveBoxVis === "hidden") return saveBoxCon.style.visibility = "visible"
+        return saveBoxCon.style.visibility = "hidden"
+    }
+</script>
+
+<!-- SELECT FILM & FILTER TITLE FUNCTION -->
+<script>
+    window.selectFilm = () => {
+        const name = selectedFilm.name
+
+        window.location.href = `/player?id=${encodeURIComponent(filterTitle(name))}`
+    }
+
+    window.filterTitle = (name) => {
+        // trailer-specific part of name
+        const trailerString = " Trailer"
+        if (!name.includes(trailerString)) return alert("Incorrect trailer name. Please contact an admin to resolve this issue.")
+        
+        // remove trailer-specific name part
+        return name.slice(0, name.indexOf(trailerString))
+    }
+</script>
+
+<!-- POPULATE PAGE CONTENT FUNCTIONS -->
+<!-- Takes config object as argument: -->
+<!-- { new: true } attribute will make sure all items are not repeats of previous results -->
+<!-- { shuffle: true } will reorder fresh film results and disregard whether a film is a repeat or not -->
+<script>
+    window.populatePage = async (config) => {
+        // get tag from URL and write to selected-title
+        const tagParam = decodeURIComponent(new URLSearchParams(window.location.search).get('t'))
+        if (!tagParam || tagParam === "null") return alert("No film tag provided. Please go to home page and select an option.")
+        document.querySelector("#selected-title").textContent = `You Selected: ${tagParam}`
+
+        // display loading animation
+        overlay("#overlay-loading")
+
+        let films = await getFilms(tagParam, config)
+        console.log('getFilms returned films', films)
+
+        // hide loading animation
+        overlay("hide")
+
+        // write film data into carousel items
+        for (let i=0; i<3; i++) {
+            if (!films[i]) {
+                document.querySelector(`#result-${i+1}`).style.display = "none"
+                continue
+            }
+            document.querySelector(`#result-${i+1}`).style.display = "block"
+
+            const poster = document.querySelector(`#result-${i+1}-poster`)
+            poster.style.backgroundImage = `url(${films[i].images.normal_image_url})`
+            poster.onclick = () => {
+                window.selectedFilm = films[i]
+                overlay("#overlay-trailer", playSelectedTrailer)
+            }
+
+            const title = document.querySelector(`#result-${i+1}-title`)
+            title.textContent = filterTitle(films[i].name)
+
+            const tags = document.querySelector(`#result-${i+1}-tags`)
+            const hiddenTags = [ "film_trailer" ]
+            hiddenTags.push(tagParam)
+
+            let filmTags = films[i].tags.split(",")
+            filmTags = filmTags.filter(filmTag => hiddenTags.every(hTag => hTag !== filmTag))
+            tags.textContent = filmTags[0] ? `(${filmTags.join(", ")})` : ""
+        }
+    }
+
+    window.getFilms = async (tag, config) => {
+        console.log('getting films with', config)
+        let prevFilms = localStorage.getItem('results') ? JSON.parse(localStorage.getItem('results')).films : null
+
+        // check we have valid previous films and that they match the selected tag
+        // only use previous films if config.shuffle argument === false
+        if ((!config || (!config.new && !config.shuffle)) && prevFilms && prevFilms.every(prevFilm => prevFilm && prevFilm.tags && prevFilm.tags.includes(tag))) {
+            return prevFilms
+        }
+
+        // fetches set of film trailers that match tag
+        let films = await fetch(`https://flowplayer-middleware.azurewebsites.net/api/getVideo?code=71QIkhIZbREwZek4nRNjIjSsWJcu7GAbKncFKnz30JGviBDCxokuog%3D%3D&tags=${encodeURIComponent(tag)},film_trailer&pageSize=6`)
+            .then(response => response.json())
+        
+        // alert user if no matching films found
+        if (!films[0]) {
+            alert("No films matching supplied tag found! Please go to home page and try another option.")
+            return []
+        }
+
+        // shuffle order of films if shuffle config attribute is true 
+        if (config && config.shuffle) {
+            films = films.map((a) => ({sort: Math.random(), value: a}))
+                .sort((a, b) => a.sort - b.sort)
+                .map((a) => a.value)
+        }
+
+        // remove any repeat results if new config attribute is true (only if we have enough results)
+        if (config && config.new && prevFilms && prevFilms.every(prevFilm => prevFilm && prevFilm.id) && films.length > prevFilms.length) {
+            films = films.filter(film => {
+                return !prevFilms.some(prevFilm => {
+                    return film.name === prevFilm.name
+                })
+            })
+        }
+        
+        // return only 3 items
+        films.length = 3
+
+        // store tag and film results in localStorage.
+        // this is used to make sure not to display repeat options on shuffle
+        // and to correctly route back to same results from player page.
+        localStorage.setItem('results', JSON.stringify({ tag, films }))
+
+        return films
+    }
+    
+    // initial page load
+    populatePage({ shuffle: false, new: false })
+</script>

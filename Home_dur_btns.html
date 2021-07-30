@@ -1,0 +1,14 @@
+<script>
+    window.selectTag = (tag) => window.location.href = `/results?t=${encodeURIComponent(tag)}`
+</script>
+<div style="display: flex; width: 100%; flex-wrap: wrap; justify-content: space-around; max-width: 1000px;">
+    <button class="empire-btn-round" onClick="selectTag('5 minutes')">
+        5 Mins
+    </button>
+    <button class="empire-btn-round" onClick="selectTag('10 minutes')">
+        10 Mins
+    </button>
+    <button class="empire-btn-round" onClick="selectTag('20 minutes')">
+        20 Mins
+    </button>
+</div>
